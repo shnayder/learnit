@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LearnIt · Learning Tracker</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background-color: #0f172a;
+        color: #f8fafc;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+      }
+
+      #root {
+        width: min(960px, 100%);
+      }
+
+      .app {
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        padding: 2.5rem;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.35);
+      }
+
+      .hero h1 {
+        font-size: clamp(2.5rem, 6vw, 3.5rem);
+        margin-bottom: 0.5rem;
+      }
+
+      .tagline {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        opacity: 0.85;
+      }
+
+      .overview {
+        margin-top: 2rem;
+      }
+
+      .learning-list {
+        list-style: none;
+        padding: 0;
+        margin: 1.5rem 0 0;
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      .learning-item {
+        padding: 1.5rem;
+        border-radius: 16px;
+        background: rgba(51, 65, 85, 0.55);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+      }
+
+      .learning-item h3 {
+        margin: 0 0 0.75rem;
+        font-size: 1.3rem;
+      }
+
+      .learning-item p {
+        margin: 0.35rem 0;
+      }
+
+      .learning-item .next {
+        font-weight: 600;
+        color: #facc15;
+      }
+
+      @media (max-width: 640px) {
+        body {
+          padding: 1.5rem;
+        }
+
+        .app {
+          padding: 1.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

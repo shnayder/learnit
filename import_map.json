@@ -1,0 +1,9 @@
+{
+  "imports": {
+    "@app/": "./src/",
+    "react": "https://esm.sh/react@18.2.0?target=deno",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client?target=deno",
+    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime?target=deno",
+    "react/jsx-dev-runtime": "https://esm.sh/react@18.2.0/jsx-dev-runtime?target=deno"
+  }
+}
