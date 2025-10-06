@@ -1,26 +1,11 @@
+import { join, relative } from "https://deno.land/std@0.207.0/path/mod.ts";
+import { chromium } from "npm:playwright";
+
 async function reservePort(): Promise<number> {
   const listener = Deno.listen({ hostname: "127.0.0.1", port: 0 });
   const { port } = listener.addr as Deno.NetAddr;
   listener.close();
   return port;
-}
-
-async function runCommand(
-  command: string,
-  args: string[],
-  env?: Record<string, string>,
-): Promise<void> {
-  const process = new Deno.Command(command, {
-    args,
-    stdout: "inherit",
-    stderr: "inherit",
-    env,
-  }).spawn();
-
-  const status = await process.status;
-  if (!status.success) {
-    throw new Error(`${command} ${args.join(" ")} failed with code ${status.code}`);
-  }
 }
 
 async function main(): Promise<void> {
@@ -80,26 +65,30 @@ async function main(): Promise<void> {
   try {
     await waitForServerReady();
 
-    const artifactsDir = "artifacts";
+    const artifactsDir = join(Deno.cwd(), "artifacts");
     await Deno.mkdir(artifactsDir, { recursive: true });
 
-    const browsersPath = `${Deno.cwd()}/.playwright-browsers`;
-    const playwrightEnv = {
-      ...Deno.env.toObject(),
-      PLAYWRIGHT_BROWSERS_PATH: browsersPath,
-    };
+    const browsersPath = join(Deno.cwd(), ".playwright-browsers");
+    await Deno.mkdir(browsersPath, { recursive: true });
+    Deno.env.set("PLAYWRIGHT_BROWSERS_PATH", browsersPath);
 
-    await runCommand("npx", ["--yes", "playwright", "install", "chromium"], playwrightEnv);
-    await runCommand("npx", [
-      "--yes",
-      "playwright",
-      "screenshot",
-      "--wait-for-timeout=2000",
-      `http://127.0.0.1:${port}`,
-      `${artifactsDir}/home.png`,
-    ], playwrightEnv);
+    const browser = await chromium.launch({ headless: true });
 
-    console.log("Screenshot saved to artifacts/home.png");
+    try {
+      const page = await browser.newPage();
+      const url = `http://127.0.0.1:${port}`;
+      await page.goto(url, { waitUntil: "networkidle" });
+      await page.waitForTimeout(2_000);
+
+      const screenshotPath = join(artifactsDir, "home.png");
+      await page.screenshot({ path: screenshotPath, fullPage: true });
+
+      console.log(
+        `Screenshot saved to ${relative(Deno.cwd(), screenshotPath)}`,
+      );
+    } finally {
+      await browser.close();
+    }
   } finally {
     try {
       server.kill("SIGTERM");
