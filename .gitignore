@@ -1,3 +1,6 @@
 public/main.js
 .deno/
+.deno-runtime/
+.playwright-browsers/
+artifacts/
 .DS_Store

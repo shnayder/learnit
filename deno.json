@@ -6,12 +6,13 @@
   },
   "importMap": "import_map.json",
   "tasks": {
-    "dev": "DENO_DIR=.deno deno run --allow-run --allow-read --allow-write --allow-net --allow-env tools/dev.ts",
-    "build": "DENO_DIR=.deno deno bundle --import-map=import_map.json src/main.tsx -o public/main.js",
-    "start": "DENO_DIR=.deno deno run --allow-net --allow-read --allow-env src/server.ts",
+    "dev": "DENO_TLS_CA_STORE=system DENO_DIR=.deno deno run --allow-run --allow-read --allow-write --allow-net --allow-env tools/dev.ts",
+    "build": "DENO_TLS_CA_STORE=system DENO_DIR=.deno deno bundle --import-map=import_map.json src/main.tsx -o public/main.js",
+    "start": "DENO_TLS_CA_STORE=system DENO_DIR=.deno deno run --allow-net --allow-read --allow-env src/server.ts",
     "check": "deno check src/main.tsx src/App.tsx src/server.ts",
     "fmt": "deno fmt",
-    "lint": "deno lint"
+    "lint": "deno lint",
+    "screenshot": "DENO_TLS_CA_STORE=system DENO_DIR=.deno deno run --allow-run --allow-read --allow-write --allow-net --allow-env tools/screenshot.ts"
   },
   "fmt": {
     "options": {
