@@ -1,10 +1,29 @@
 # LearnIt
 
-A Deno + React starter for a learning tracker app. The current build ships a simple "hello world" style page with mock guitar practice data, plus a minimal tooling setup so you can iterate quickly.
+A Deno + React starter for a learning tracker app. The current build ships a simple "hello world"
+style page with mock guitar practice data, plus a minimal tooling setup so you can iterate quickly.
 
 ## Prerequisites
 
-- [Deno](https://deno.land/) v1.37 or newer (the project relies on built-in `deno task` and `deno bundle`).
+- [Deno](https://deno.land/) v1.37 or newer (the project relies on built-in `deno task` and
+  `deno bundle`).
+
+You can install a local copy of Deno into the repository by running:
+
+```bash
+$ ./scripts/install-deno.sh
+$ export PATH="$(pwd)/.deno-runtime/bin:$PATH"
+$ ./scripts/install-playwright-deps.sh
+```
+
+The helper script defaults to version `v2.5.3`. Override the `DENO_VERSION` or `INSTALL_DIR`
+environment variables if you need a different toolchain or install location.
+
+`install-playwright-deps.sh` installs the native dependencies Playwright needs:
+
+- On Linux containers it uses `apt` to add the shared libraries Chromium expects.
+- On macOS it verifies that the Xcode Command Line Tools are present and exits (run
+  `xcode-select --install` if the script reports they are missing).
 
 ## Available tasks
 
@@ -21,9 +40,18 @@ $ deno task dev
 # Formatting and linting helpers
 $ deno task fmt
 $ deno task lint
+
+# Capture a headless browser screenshot of the home page (writes artifacts/home.png)
+$ deno task screenshot
 ```
 
-`deno task dev` will produce a bundle and boot the server. The watcher keeps an eye on TypeScript/TSX files under `src/` and restarts the server if the backend code changes. Fix any bundle errors reported in the terminal and the watcher will pick up again automatically.
+`deno task dev` will produce a bundle and boot the server. The watcher keeps an eye on
+TypeScript/TSX files under `src/` and restarts the server if the backend code changes. Fix any
+bundle errors reported in the terminal and the watcher will pick up again automatically.
+
+`deno task screenshot` spins up the local server in the background, drives it with Playwright (via
+Deno's npm support), and stores a snapshot of the home page at `artifacts/home.png`. The first run
+downloads the Chromium browser, so it may take a little longer than subsequent runs.
 
 ## Project structure
 
